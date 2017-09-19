@@ -5,54 +5,96 @@ namespace FuncionalConsole
 {
     public static class SelectImplement
     {
-        #region .: Get :.
-        public static IEnumerable<Foo> Get()
+        public static string[] GetTextFromFoo(Foo[] employees)
         {
-            return new List<Foo>();
+            var result = new string[employees.Length];
+            for (var i = 0; i < employees.Length; i++)
+            {
+                result[i] = employees[i].Text;
+            }
+            return result;
         }
-        #endregion
 
-        #region .: GetResult :.
-        public static IEnumerable<TResult> GetResult<TResult>()
+        public static List<string> GetTextFromFoo1(List<Foo> employees)
         {
-            return new List<TResult>();
+            var result = new List<string>(employees.Count);
+            foreach (var employee in employees)
+            {
+                result.Add(employee.Text);
+            }
+            return result;
         }
-        #endregion
 
-        #region .: GetResultsExtensions :.
-        public static IEnumerable<TResult> GetResultsExtension<TResult>(this IEnumerable<TResult> source)
+        public static List<string> GetTextFromFoo2(List<Foo> employees)
         {
-            foreach (var item in source)
+            var result = new List<string>(employees.Count);
+            foreach (var employee in employees)
             {
-                yield return item;
+                result.Add(employee.Text);
             }
+            return result;
         }
-        #endregion
 
-        #region .: Select :.
-        public static IEnumerable<TResult> MySelect<TSource, TResult>(
-            this IEnumerable<TSource> source,
-            Func<TSource, TResult> selector)
+        public static IList<string> GetTextFromFoo3(IList<Foo> employees)
         {
-            if (source == null)
+            var result = new List<string>(employees.Count);
+            foreach (var employee in employees)
             {
-                throw new ArgumentNullException(nameof(source));
+                result.Add(employee.Text);
             }
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            return SelectImpl(source, selector);
+            return result;
         }
-        private static IEnumerable<TResult> SelectImpl<TSource, TResult>(
-            this IEnumerable<TSource> source,
-            Func<TSource, TResult> selector)
+
+        public static IEnumerable<string> GetTextFromFoo4(IEnumerable<Foo> employees)
         {
-            foreach (var item in source)
+            foreach (var employee in employees)
             {
-                yield return selector(item);
+                yield return employee.Text;
             }
         }
-        #endregion
+
+        public static IEnumerable<string> GetText(IEnumerable<Foo> employees)
+        {
+            foreach (var employee in employees)
+            {
+                yield return employee.Text;
+            }
+        }
+
+        public static IEnumerable<string> GetNames(
+            this IEnumerable<Foo> employees
+        )
+        {
+            foreach (var employee in employees)
+            {
+                yield return employee.Text;
+            }
+        }
+
+        public static IEnumerable<TResult> Get<TResult>(
+            this IEnumerable<Foo> foos,
+            Func<Foo, TResult> selector
+        )
+        {
+            foreach (var foo in foos)
+            {
+                yield return selector(foo);
+            }
+        }
+
+        public static IEnumerable<TResult> Select<T, TResult>(
+            this IEnumerable<T> elements,
+            Func<T, TResult> selector
+        )
+        {
+            foreach (var element in elements)
+            {
+                yield return selector(element);
+            }
+        }
+
+
     }
+
+
 }
